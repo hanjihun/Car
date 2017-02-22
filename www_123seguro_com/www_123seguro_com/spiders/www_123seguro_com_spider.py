@@ -21,7 +21,6 @@ class Www123SeguroComSpider(scrapy.Spider):
 	company_list = ['1','2','3','4','5','6','7','9','13','14','1001','1002']
 
 
-
 	def __init__(self, categories=None, *args, **kwargs):
 		super(Www123SeguroComSpider, self).__init__(*args, **kwargs)
 		#pass
@@ -52,8 +51,6 @@ class Www123SeguroComSpider(scrapy.Spider):
 				info['age'] = param.split('---')[4]
 
 				yield Request(url+query, callback=self.parse_price, meta={'info':info, 'param':param})
-
-
 
 
 	### Iterate all brand/version/model and yield the requests from the infor.
@@ -154,20 +151,22 @@ class Www123SeguroComSpider(scrapy.Spider):
 
 				for ins_type in types.keys():
 					item = OrderedDict()
-					item['model'] = info['model_name']
-					item['brand'] = info['marca_name']
-					item['year'] = info['year']
-					item['location'] = location
-					item['age'] = info['age']
-					item['date'] = date.today()
-					item['company'] = result['compania']
-					item['insurance type'] = types[ins_type]
-					item['price'] = ""
+					item['Vendedor'] = 427
+					item['Model'] = info['model_name']
+					item['Brand'] = info['marca_name']
+					item['Year'] = info['year']
+					item['Location'] = location
+					item['Age'] = info['age']
+					item['Date'] = date.today()
+					item['Company'] = result['compania']
+					item['Insurance Type'] = types[ins_type]
+					item['Price'] = ""
+					item['Currency'] = "ARS"
 					try:
 						price = price_info[ins_type]['premio'][price_info[ins_type]['premio'].keys()[0]]
 						print "Price ===== ", price						
 						
-						item['price'] = price
+						item['Price'] = price
 						#item['url'] = response.url
 						yield item
 					except:
