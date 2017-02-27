@@ -15,7 +15,44 @@ class CategoriesOfCompresegurosCom(scrapy.Spider):
 
 	start_urls = ['https://www.compreseguros.com/']
 
+	brand_model_list_file_name = "brand_model_list.csv"
+	location_list_file_name = "location_list.csv"
+
+
 	def parse(self, response):
+		brand_model_list = []
+		location_list = []
+
+		with open(self.brand_model_list_file_name, 'rb') as brand_model_list_file:
+			reader = csv.reader(brand_model_list_file)
+			for index, row in enumerate(reader):
+				if index == 0:
+					continue
+				brand_model_list.append({'brand':row[0], 'version':row[1], 'year':row[2], 'age':row[3], 'brand_id':row[4], 'model_id':row[5], 'version_id':row[6]})
+
+		with open(self.location_list_file_name, 'rb') as location_list_file:
+			reader = csv.reader(location_list_file)
+
+			for index, row in enumerate(reader):
+				if index == 0:
+					continue
+				location_list.append({'prov_name':row[0], 'city_name':row[1], 'zipcode':row[2]})
+
+		links = []
+		for location in location_list:
+			for brand_model in brand_model_list:
+				link = brand_model['brand'].replace(' ','*') + "---" + brand_model['version'].replace(' ','*')+ "---" + brand_model['year'] + "---" + brand_model['age']
+				link = link + "---" + brand_model['brand_id'] + "---" + brand_model['model_id'] + "---" + brand_model['version_id']
+				link = link + "---" + location['prov_name'].replace(' ','*') + "---" + location['city_name'].replace(' ','*') + "---" + location['zipcode']
+				
+				links.append(link)
+
+		yield {'links':links}
+
+	### To list the zip code and the location name.
+	### Do not delete below code ###
+
+	def parse1(self, response):
 		brand_url = "https://gestion.compreseguros.com/comun/infoauto/api/v1/marcas"
 
 		yield Request(brand_url, self.get_brands)
