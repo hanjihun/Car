@@ -73,7 +73,7 @@ class SegurarseComArSpider(scrapy.Spider):
 				continue
 
 			item = OrderedDict()
-			item['Vendedor'] = 426
+			item['Vendedor'] = 428
 			item['Model'] = param.split('---')[1].replace('*',' ')
 			item['Brand'] = param.split('---')[0].replace('*',' ')
 			item['Year'] = param.split('---')[2]
