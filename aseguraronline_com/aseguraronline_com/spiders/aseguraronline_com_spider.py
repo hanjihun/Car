@@ -72,6 +72,7 @@ class AseguraronlineComSpider(scrapy.Spider):
 				p = price.replace('$','').strip()
 				if p != "0":
 					item = OrderedDict()
+					item['Vendedor'] = 431
 					item['Model'] = modelo
 					item['Brand'] = marca
 					item['Year'] = anio
@@ -81,6 +82,6 @@ class AseguraronlineComSpider(scrapy.Spider):
 					item['Company'] = companies[int(company_id)]
 					item['Insurance Type'] = types[index]
 					item['Price'] = p
-					print item
+					item['Currency'] = "ARS"
 					yield item
 			
